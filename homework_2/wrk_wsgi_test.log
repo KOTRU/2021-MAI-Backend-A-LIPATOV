@@ -1,0 +1,9 @@
+kotru@DESKTOP-RAA8HH4:/mnt/d/python_projects/django$  wrk -t12 -c400 -d30s http://localhost:8000
+Running 30s test @ http://localhost:8000
+  12 threads and 400 connections        
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    27.01ms    4.41ms  83.26ms   90.66%
+    Req/Sec     1.23k   154.94     1.69k    79.31%
+  439619 requests in 30.09s, 64.98MB read
+Requests/sec:  14609.35
+Transfer/sec:      2.16MB
