@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'books',
+    'genres',
+    'authors',
     "rest_framework",
     "upload"
 ]

@@ -1,22 +1,23 @@
 from django.db import models
+from genres.models import Genre
+from authors.models import Author
 
-class Author(models.Model):
-    my_super_pk = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=256)
-
-class Genre(models.Model):
-    GENRES_TYPES = (
-        ('A', 'Action'),
-        ('A', 'Adventure'),
-        ('F', 'Fantasy'),
-        ('H', 'Historical'),
-    )
-    genre_type_name = models.CharField(max_length=128, choices=GENRES_TYPES)
-
+def book_directory_path(instance, filename):
+    return 'book_{0}/{1}'.format(instance.id, filename)
 
 class Book(models.Model):
-    my_super_pk = models.AutoField(primary_key=True)
-    book_name = models.CharField(max_length=256)
-    book_genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
-    book_description = models.TextField(max_length=4000)
-    author =  models.ForeignKey(Author, on_delete=models.SET_NULL, null=True)
+    title = models.CharField('Название книги',max_length=1024)
+    publish_date = models.PositiveSmallIntegerField('Дата публикации')
+    rating = models.PositiveSmallIntegerField('Рейтинг')
+    cover = models.ImageField('Обложка',upload_to=book_directory_path, null=True, blank=True)
+    capacity = models.PositiveSmallIntegerField('Колличество оставшихся книг')
+    price = models.PositiveSmallIntegerField('Цена', blank=False)
+    genre =  models.ForeignKey(Genre, on_delete=models.CASCADE, null=True, blank=False, related_name='books')
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=False, related_name='books')
+
+    def __str__(self):
+        return f"{self.title}"
+
+    class Meta:
+        verbose_name = "Книга"
+        verbose_name_plural = "Книги"
