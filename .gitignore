@@ -4,3 +4,4 @@ venv/
 *.swp
 .vscode/
 .env*
+staticfiles/

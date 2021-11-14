@@ -10,7 +10,6 @@ class Book(models.Model):
     publish_date = models.PositiveSmallIntegerField('Дата публикации')
     rating = models.PositiveSmallIntegerField('Рейтинг')
     cover = models.ImageField('Обложка',upload_to=book_directory_path, null=True, blank=True)
-    capacity = models.PositiveSmallIntegerField('Колличество оставшихся книг')
     price = models.PositiveSmallIntegerField('Цена', blank=False)
     genre =  models.ForeignKey(Genre, on_delete=models.CASCADE, null=True, blank=False, related_name='books')
     author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=False, related_name='books')
