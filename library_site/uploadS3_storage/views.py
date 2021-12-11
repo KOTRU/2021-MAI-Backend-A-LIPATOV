@@ -15,12 +15,22 @@ class UploadS3ViewSet(mixins.CreateModelMixin,
                mixins.ListModelMixin,
                GenericViewSet):
 
-    queryset = FileS3.objects.all().order_by('id')
     serializer_class = UploadS3Serializer
+    queryset = FileS3.objects.all().order_by('id')
+
+    def list(request, *args, **kwargs):
+        if request.request.user.is_authenticated == False:
+            return Response()
+        queryset = FileS3.objects.all().order_by('id')
+        queryset = queryset.filter(owner=request.request.user)
+        serializer = UploadS3Serializer(queryset, many=True)
+        return Response(serializer.data, status.HTTP_200_OK)
 
     def create(self, request):
         serializer = UploadS3Serializer(data=request.data)
         if serializer.is_valid():
+            if request.user.is_authenticated == False:
+                return Response('Требуется авторизация',status.HTTP_401_UNAUTHORIZED)
             session = boto3.session.Session()
             s3 = session.client(
                 service_name='s3',
@@ -39,7 +49,8 @@ class UploadS3ViewSet(mixins.CreateModelMixin,
                 ExpiresIn = 3600
             )
             file = FileS3.objects.create(
-                    url = url
+                    url = url,
+                    owner = request.user
                )
             serializer = UploadS3Serializer(file)
             

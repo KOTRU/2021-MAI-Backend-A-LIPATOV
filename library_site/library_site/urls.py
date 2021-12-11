@@ -16,7 +16,7 @@ router1.register('authors', AuthorViewSet)
 router1.register('genres', GenreViewSet)
 router1.register('books-search',BookSearch,'books-search')
 router1.register('upload',UploadViewSet)
-router1.register('upload_S3',UploadS3ViewSet)
+router1.register('upload_S3',UploadS3ViewSet,'upload_S3')
 
 urlpatterns = [
     path('api/', include(router1.urls)),
