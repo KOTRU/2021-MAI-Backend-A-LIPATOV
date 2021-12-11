@@ -1,13 +1,27 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-def image_upload(request):
-    if request.method == "POST" and request.FILES["image_file"]:
-        image_file = request.FILES["image_file"]
-        fs = FileSystemStorage()
-        filename = fs.save(image_file.name, image_file)
-        image_url = fs.url(filename)
-        print(image_url)
-        return render(request, "upload.html", {
-            "image_url": image_url
-        })
-    return render(request, "upload.html")
+from .serializers import UploadSerializer
+from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
+from rest_framework import mixins,status
+from .models import File
+
+class UploadViewSet(mixins.CreateModelMixin,
+               mixins.RetrieveModelMixin,
+               mixins.ListModelMixin,
+               GenericViewSet):
+
+    queryset = File.objects.all().order_by('id')
+    serializer_class = UploadSerializer
+
+    def create(self, request):
+        serializer = UploadSerializer(data=request.data)
+        if serializer.is_valid():
+            file = File.objects.create(
+                    file = serializer.initial_data['file'],
+                )
+            serializer = UploadSerializer(file)
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

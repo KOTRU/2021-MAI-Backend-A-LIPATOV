@@ -7,12 +7,14 @@ from django.conf.urls import url
 from books.views import *
 from authors.views import *
 from genres.views import *
+from upload.views import *
 
 router1 = routers.DefaultRouter()
 router1.register('books', BookViewSet)
 router1.register('authors', AuthorViewSet)
 router1.register('genres', GenreViewSet)
 router1.register('books-search',BookSearch,'books-search')
+router1.register('upload',UploadViewSet)
 
 urlpatterns = [
     path('api/', include(router1.urls)),
