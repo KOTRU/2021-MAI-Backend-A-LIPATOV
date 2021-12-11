@@ -1,14 +1,22 @@
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path, include
+from rest_framework import routers
+from django.conf.urls import url
+from books.views import *
+from authors.views import *
+from genres.views import *
 
-from django.urls import path,include
-from upload.views import image_upload
+router1 = routers.DefaultRouter()
+router1.register('books', BookViewSet)
+router1.register('authors', AuthorViewSet)
+router1.register('genres', GenreViewSet)
+router1.register('books-search',BookSearch,'books-search')
 
 urlpatterns = [
-    path("", image_upload, name="upload"),
+    path('api/', include(router1.urls)),
     path('admin/', admin.site.urls),
-    path('books/', include('books.urls')),
 ]
 
 if bool(settings.DEBUG):

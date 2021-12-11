@@ -3,7 +3,7 @@ from genres.models import Genre
 from authors.models import Author
 
 def book_directory_path(instance, filename):
-    return 'book_{0}/{1}'.format(instance.id, filename)
+    return f'book/{filename}'
 
 class Book(models.Model):
     title = models.CharField('Название книги',max_length=1024)

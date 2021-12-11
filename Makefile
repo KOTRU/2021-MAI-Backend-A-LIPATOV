@@ -13,7 +13,11 @@ static_dev: up_dev
 run_dev: static_dev
 	docker-compose -f docker-compose.yml exec web python manage.py createsuperuser --noinput
 
-
+up_debug:
+	docker-compose -f docker-compose.debug.yml up -d --build
+stop_debug:
+	docker-compose -f docker-compose.debug.yml down -v
+	
 stop_prod:
 	docker-compose -f docker-compose.prod.yml down -v
 stop_dev:
