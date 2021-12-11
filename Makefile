@@ -3,7 +3,7 @@ up_prod:
 static_prod: up_prod
 	docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear
 run_prod: static_prod
-	docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser
+	docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser --noinput
 
 
 up_dev:
@@ -11,7 +11,7 @@ up_dev:
 static_dev: up_dev
 	docker-compose -f docker-compose.yml exec web python manage.py collectstatic --no-input --clear
 run_dev: static_dev
-	docker-compose -f docker-compose.yml exec web python manage.py createsuperuser
+	docker-compose -f docker-compose.yml exec web python manage.py createsuperuser --noinput
 
 
 stop_prod:
