@@ -29,7 +29,7 @@ urlpatterns = [
     path("", home_view, name="home"),
     path('search/', include('search.urls')),
     path('redis_key/', include('redis_key.urls')), 
-
+    path('chat/', include('chat.urls')),
 ]
 
 if bool(settings.DEBUG):

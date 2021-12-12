@@ -27,7 +27,6 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS","localhost 127.0.0.1 [::1]
 # Application definition
 
 INSTALLED_APPS = [
-    'sslserver',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +42,8 @@ INSTALLED_APPS = [
     'uploadS3_storage',
     'social_django',
     'search',
-    'redis_key'
+    'redis_key',
+    'chat'
 ]
 
 MIDDLEWARE = [

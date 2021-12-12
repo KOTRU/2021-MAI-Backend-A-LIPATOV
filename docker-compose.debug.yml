@@ -1,5 +1,26 @@
 version: '3.7'
 services:
+  web:
+    container_name: backend
+    build:
+      context: ./library_site
+      dockerfile: Dockerfile.prod
+    command: gunicorn library_site.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    expose:
+      - 8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    ports:
+    - 80:80
   db:
     image: postgres:12.0-alpine
     volumes:
@@ -27,7 +48,20 @@ services:
      - "6379:6379"
     volumes:
      - redis_data:/var/lib/redis
+  centrifugal:
+    image: centrifugo/centrifugo
+    command: centrifugo -c config.json
+    ports: 
+    - "8001:8001"
+    volumes: 
+    - "./config:/centrifugo"
+    ulimits:
+      nproc: 65536
+      nofile:
+        soft: 65536
+        hard: 65536
 volumes:
   postgres_data:
   esdata1:
   redis_data:
+  static_volume:

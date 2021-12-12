@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Chat Room</title>
+    <script src="https://cdn.jsdelivr.net/gh/centrifugal/centrifuge-js@2.8.3/dist/centrifuge.min.js"></script>
+</head>
+
+<body>
+    <ul id="chat-thread" class="chat-thread"></ul>
+    <div class="chat-message">
+        <input id="chat-message-input" class="chat-message-input" type="text" autocomplete="off" autofocus />
+    </div>
+    {{ room_name|json_script:"room-name" }}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const chatThread = document.querySelector('#chat-thread');
+        const messageInput = document.querySelector('#chat-message-input');
+
+        const centrifuge = new Centrifuge("ws://" + window.location.host + "/connection/websocket");
+
+        centrifuge.on('connect', function (ctx) {
+            console.log("connected", ctx);
+        });
+
+        centrifuge.on('disconnect', function (ctx) {
+            console.log("disconnected", ctx);
+        });
+
+        const sub = centrifuge.subscribe('rooms:' + roomName, function (ctx) {
+            const chatNewThread = document.createElement('li');
+            const chatNewMessage = document.createTextNode(ctx.data.message);
+            chatNewThread.appendChild(chatNewMessage);
+            chatThread.appendChild(chatNewThread);
+            chatThread.scrollTop = chatThread.scrollHeight;
+        });
+
+        centrifuge.connect();
+
+        messageInput.focus();
+        messageInput.onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                e.preventDefault();
+                const message = messageInput.value;
+                if (!message) {
+                    return;
+                }
+                sub.publish({ 'message': message });
+                messageInput.value = '';
+            }
+        };
+    </script>
+</body>
+
+</html>
