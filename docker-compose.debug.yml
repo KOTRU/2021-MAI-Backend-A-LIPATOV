@@ -20,6 +20,14 @@ services:
       - esdata1:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+     - "6379:6379"
+    volumes:
+     - redis_data:/var/lib/redis
 volumes:
   postgres_data:
   esdata1:
+  redis_data:

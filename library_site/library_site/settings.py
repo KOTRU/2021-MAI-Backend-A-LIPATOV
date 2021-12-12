@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'upload',
     'uploadS3_storage',
     'social_django',
-    'search'
+    'search',
+    'redis_key'
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,10 @@ ELASTICSEARCH_DSL = {
         'hosts': f'{os.environ.get("ELASTIC_HOST")}:{os.environ.get("ELASTIC_PORT")}'
     },
 }
+
+REDIS_HOST = os.environ.get("REDIS_HOST")
+REDIS_PORT = os.environ.get("REDIS_PORT")
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
