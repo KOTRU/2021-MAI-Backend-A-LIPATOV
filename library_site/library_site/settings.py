@@ -27,6 +27,7 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS","localhost 127.0.0.1 [::1]
 # Application definition
 
 INSTALLED_APPS = [
+    'sslserver',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,7 +39,8 @@ INSTALLED_APPS = [
     'genres',
     'authors',
     'upload',
-    'uploadS3_storage'
+    'uploadS3_storage',
+    'social_django'
 ]
 
 MIDDLEWARE = [
@@ -50,13 +52,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+AUTHENTICATION_BACKENDS = [
+ 'social_core.backends.vk.VKOAuth2',
+ 'social_core.backends.facebook.FacebookOAuth2',
+ 'django.contrib.auth.backends.ModelBackend',
+]
 ROOT_URLCONF = 'library_site.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates',],
+        'DIRS': ['templates', os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends'
             ],
         },
     },
@@ -130,3 +137,16 @@ STATIC_URL = "/staticfiles/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "/mediafiles/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
+STATICFILES_DIRS = [ os.path.join (BASE_DIR, "static") ]
+
+SOCIAL_AUTH_VK_OAUTH2_KEY =os.environ.get("VK_OAUTH2_KEY")
+SOCIAL_AUTH_VK_OAUTH2_SECRET =os.environ.get("VK_OAUTH2_SECRET")
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get("FACEBOOK_OAUTH2_KEY")       
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get("FACEBOOK_OAUTH2_SECRET")  
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_URL = 'logout'
+LOGOUT_REDIRECT_URL = 'login'

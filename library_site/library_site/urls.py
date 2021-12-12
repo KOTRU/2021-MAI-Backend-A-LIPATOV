@@ -9,6 +9,8 @@ from authors.views import *
 from genres.views import *
 from upload.views import *
 from uploadS3_storage.views import *
+from django.contrib.auth import views as auth_views
+from .views import login_view, home_view
 
 router1 = routers.DefaultRouter()
 router1.register('books', BookViewSet)
@@ -21,6 +23,10 @@ router1.register('upload_S3',UploadS3ViewSet,'upload_S3')
 urlpatterns = [
     path('api/', include(router1.urls)),
     path('admin/', admin.site.urls),
+    path('login/', login_view, name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('social_auth/', include('social_django.urls',namespace='social')),
+    path("", home_view, name="home"),
 ]
 
 if bool(settings.DEBUG):
