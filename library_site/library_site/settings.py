@@ -34,13 +34,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_elasticsearch_dsl',
     'rest_framework',
     'books',
     'genres',
     'authors',
     'upload',
     'uploadS3_storage',
-    'social_django'
+    'social_django',
+    'search'
 ]
 
 MIDDLEWARE = [
@@ -79,6 +81,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'library_site.wsgi.application'
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 25,
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser'
@@ -117,7 +121,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': f'{os.environ.get("ELASTIC_HOST")}:{os.environ.get("ELASTIC_PORT")}'
+    },
+}
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 

@@ -27,6 +27,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('social_auth/', include('social_django.urls',namespace='social')),
     path("", home_view, name="home"),
+    path('search/', include('search.urls')), # new
 ]
 
 if bool(settings.DEBUG):
