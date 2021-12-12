@@ -7,8 +7,8 @@ class GenreSerializer(serializers.ModelSerializer):
     def validate_name(self,value):
         if(value is None):
             raise serializers.ValidationError("Название должно быть не пустое.")
-        genre_data = Genre.objects.get(name=value)
-        if(genre_data is not None):
+        genre_data = Genre.objects.filter(name=value)
+        if(genre_data.count() > 0):
             raise serializers.ValidationError("Жанр уже существует.")
         return value
 
