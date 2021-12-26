@@ -7,7 +7,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.views import APIView
 
 from books.documents import BookDocument, AuthorDocument, GenreDocument
-from books.serializers import BookSerializer
+from search.serializers import BookSearchSerializer
 from authors.serializers import AuthorSerializer
 from genres.serializers import GenreSerializer
 
@@ -64,7 +64,7 @@ class SearchGenres(PaginatedElasticSearchAPIView):
 
 
 class SearchBooks(PaginatedElasticSearchAPIView):
-    serializer_class = BookSerializer
+    serializer_class = BookSearchSerializer
     document_class = BookDocument
 
     def generate_q_expression(self, query):

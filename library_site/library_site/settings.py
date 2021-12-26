@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'social_django',
     'search',
     'redis_key',
-    'chat'
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +58,8 @@ MIDDLEWARE = [
 AUTHENTICATION_BACKENDS = [
  'social_core.backends.vk.VKOAuth2',
  'social_core.backends.facebook.FacebookOAuth2',
+ 'social_core.backends.github.GithubOAuth2',
+ 'social_core.backends.google.GoogleOAuth2',
  'django.contrib.auth.backends.ModelBackend',
 ]
 ROOT_URLCONF = 'library_site.urls'
@@ -163,3 +165,7 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
+SOCIAL_AUTH_GITHUB_KEY = os.environ.get("GITHUB_OAUTH2_KEY")
+SOCIAL_AUTH_GITHUB_SECRET = os.environ.get("GITHUB_OAUTH2_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET =os.environ.get("GOOGLE_OAUTH2_SECRET")

@@ -11,8 +11,8 @@ class Book(models.Model):
     rating = models.PositiveSmallIntegerField('Рейтинг')
     cover = models.ImageField('Обложка',upload_to=book_directory_path, null=True, blank=True)
     price = models.PositiveSmallIntegerField('Цена', blank=False)
-    genre =  models.ForeignKey(Genre, on_delete=models.CASCADE, null=True, blank=False, related_name='books')
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, null=True, blank=False, related_name='books')
+    genre =  models.ForeignKey(verbose_name='Жанр',to=Genre, on_delete=models.CASCADE, null=True, blank=False, related_name='books')
+    author = models.ForeignKey(verbose_name='Автор',to=Author, on_delete=models.CASCADE, null=True, blank=False, related_name='books')
 
     def __str__(self):
         return f"{self.title}"

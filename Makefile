@@ -15,9 +15,14 @@ run_dev: static_dev
 
 up_debug:
 	docker-compose -f docker-compose.debug.yml up -d --build
+run_debug: up_debug
+	docker-compose -f docker-compose.debug.yml exec web python manage.py collectstatic --no-input --clear
+fresh_run_debug: run_debug
+	docker-compose -f docker-compose.debug.yml exec web python manage.py migrate --noinput
+	docker-compose -f docker-compose.debug.yml exec web python manage.py createsuperuser --noinput
+
 stop_debug:
 	docker-compose -f docker-compose.debug.yml down -v
-	
 stop_prod:
 	docker-compose -f docker-compose.prod.yml down
 stop_dev:

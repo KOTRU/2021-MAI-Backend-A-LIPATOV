@@ -17,6 +17,7 @@ services:
   nginx:
     container_name: nginx
     build: ./nginx
+    restart: unless-stopped
     volumes:
       - static_volume:/home/app/web/staticfiles
     ports:
@@ -40,7 +41,7 @@ services:
     volumes:
       - esdata1:/usr/share/elasticsearch/data
     ports:
-      - 9200:9200
+      - "9200:9200"
   redis:
     image: "redis:alpine"
     command: redis-server
@@ -51,6 +52,7 @@ services:
   centrifugal:
     image: centrifugo/centrifugo
     command: centrifugo -c config.json
+    restart: unless-stopped
     ports: 
     - "8001:8001"
     volumes: 
